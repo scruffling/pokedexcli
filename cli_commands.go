@@ -7,6 +7,8 @@ import (
 
 var commands map[string]cliCommand
 
+// runs after variable declarations are complete
+// avoiding circular dependency
 func init() {
 	commands = map[string]cliCommand{
 		"exit": {
@@ -22,6 +24,11 @@ func init() {
 	}
 }
 
+func getCommands(commandName string) (cliCommand, bool) {
+	command, ok := commands[commandName]
+	return command, ok
+}
+
 type cliCommand struct {
 	name        string
 	description string
@@ -30,12 +37,15 @@ type cliCommand struct {
 
 func commandExit() error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
-	defer os.Exit(0)
+	os.Exit(0)
 	return nil
 }
 
 func commandHelp() error {
-	fmt.Printf("\nWelcome to the Pokedex!\nUsage:\n\n")
+	fmt.Println()
+	fmt.Println("Welcome to the Pokedex!")
+	fmt.Println("Usage:")
+	fmt.Println()
 	usage()
 	return nil
 }
