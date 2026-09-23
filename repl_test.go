@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/google/go-cmp/cmp"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestCleanInput(t *testing.T) {
@@ -11,7 +12,7 @@ func TestCleanInput(t *testing.T) {
 		expected []string
 	}{
 		{
-			input:    " hello  world  ",
+			input:    "  hello  world  ",
 			expected: []string{"hello", "world"},
 		},
 		{
@@ -22,14 +23,12 @@ func TestCleanInput(t *testing.T) {
 			input:    "Charmander Bulbasaur PIKACHU",
 			expected: []string{"charmander", "bulbasaur", "pikachu"},
 		},
-		// add more cases here
-		//
 	}
 	for _, c := range cases {
 		actual := cleanInput(c.input)
 		if len(actual) != len(c.expected) {
 			// error and continue to next case
-			t.Errorf("Length mismatch, exptected: %v, actual: %v",
+			t.Errorf("Length mismatch, expected: %v, actual: %v",
 				c.expected, actual)
 			continue
 		}
