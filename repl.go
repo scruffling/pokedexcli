@@ -16,7 +16,15 @@ func startRepl() {
 			inputString := scanner.Text()
 			tokens := cleanInput(inputString)
 			if len(tokens) > 0 {
-				fmt.Printf("Your command was: %s\n", tokens[0])
+				commandToken := tokens[0]
+				command, ok := commands[commandToken]
+				if !ok {
+					fmt.Println("Unknown command")
+					continue
+				}
+				if err := command.callback(); err != nil {
+					fmt.Printf("Command error: %v\n", err)
+				}
 			}
 		} else {
 			// check for errors if Scan() is false
