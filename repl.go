@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func startRepl() {
+func startRepl(cfg *config) {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -21,12 +21,12 @@ func startRepl() {
 			}
 
 			commandToken := tokens[0]
-			command, exists := getCommands(commandToken)
+			command, exists := cfg.getCommands(commandToken)
 			if !exists {
 				fmt.Println("Unknown command")
 				continue
 			}
-			if err := command.callback(); err != nil {
+			if err := command.callback(cfg); err != nil {
 				fmt.Printf("Command error: %v\n", err)
 			}
 		} else {
