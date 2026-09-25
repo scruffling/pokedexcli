@@ -8,9 +8,9 @@ import (
 
 func commandBaseMap(cfg *config, targetType string) error {
 	url := targetURL(cfg, targetType)
-	locationAreas, err := pokeapi.GetLocationAreas(url)
+	locationAreas, err := cfg.pokeapiClient.GetLocationAreas(url)
 	if err != nil {
-		return err
+		return fmt.Errorf("Error getting location areas: %w\n", err)
 	}
 	if locationAreas.FirstPage() {
 		fmt.Println("-- First Page")

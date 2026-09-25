@@ -1,8 +1,10 @@
 package main
 
+import "github.com/scruffling/pokedexcli/internal/pokeapi"
+
 // runs after variable declarations are complete
 // avoiding circular dependency
-func newConfig() *config {
+func newConfig(client pokeapi.Client) *config {
 	return &config{
 		commands: map[string]cliCommand{
 			"exit": {
@@ -28,6 +30,7 @@ func newConfig() *config {
 		},
 		nextMapURL:     "",
 		previousMapURL: "",
+		pokeapiClient:  client,
 	}
 }
 
@@ -35,6 +38,7 @@ type config struct {
 	commands       map[string]cliCommand
 	nextMapURL     string
 	previousMapURL string
+	pokeapiClient  pokeapi.Client
 }
 
 func (c config) getCommands(commandName string) (cliCommand, bool) {

@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-const LocationAreasApi = "https://pokeapi.co/api/v2/location-area"
+const LocationAreasApi = baseURL + "/location-area"
 
 type LocationAreas struct {
 	Count    int     `json:"count"`
@@ -18,9 +18,16 @@ type LocationAreas struct {
 	} `json:"results"`
 }
 
-func GetLocationAreas(url string) (LocationAreas, error) {
-	res, err := http.Get(url)
+func (c *Client) GetLocationAreas(url string) (LocationAreas, error) {
 	var locationAreas LocationAreas
+	req, err := http.NewRequest("GET", url, nil)
+
+	if err != nil {
+		fmt.Println("Request generation error:")
+		return locationAreas, err
+	}
+
+	res, err := c.httpClient.Do(req)
 	if err != nil {
 		return locationAreas, fmt.Errorf("error creating request: %w", err)
 	}
@@ -29,6 +36,7 @@ func GetLocationAreas(url string) (LocationAreas, error) {
 	decoder := json.NewDecoder(res.Body)
 	err = decoder.Decode(&locationAreas)
 	if err != nil {
+		fmt.Println("Decode error:")
 		return locationAreas, err
 	}
 
