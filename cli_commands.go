@@ -1,10 +1,5 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
-
 // runs after variable declarations are complete
 // avoiding circular dependency
 func newConfig() *config {
@@ -20,12 +15,26 @@ func newConfig() *config {
 				description: "Displays a help message",
 				callback:    commandHelp,
 			},
+			"map": {
+				name:        "map",
+				description: "Displays pagninated Pokemon location areas",
+				callback:    commandMap,
+			},
+			"mapb": {
+				name:        "help",
+				description: "Displays previous Pokemon area pagnination",
+				callback:    commandMapB,
+			},
 		},
+		nextMapURL:     "",
+		previousMapURL: "",
 	}
 }
 
 type config struct {
-	commands map[string]cliCommand
+	commands       map[string]cliCommand
+	nextMapURL     string
+	previousMapURL string
 }
 
 func (c config) getCommands(commandName string) (cliCommand, bool) {
@@ -37,22 +46,4 @@ type cliCommand struct {
 	name        string
 	description string
 	callback    func(config *config) error
-}
-
-func commandExit(cfg *config) error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
-func commandHelp(cfg *config) error {
-	fmt.Println()
-	fmt.Println("Welcome to the Pokedex!")
-	fmt.Println("Usage:")
-	fmt.Println()
-	for name, command := range cfg.commands {
-		fmt.Printf("%s: %s\n", name, command.description)
-	}
-	fmt.Println()
-	return nil
 }
