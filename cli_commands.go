@@ -1,6 +1,8 @@
 package main
 
-import "github.com/scruffling/pokedexcli/internal/pokeapi"
+import (
+	"github.com/scruffling/pokedexcli/internal/pokeapi"
+)
 
 // runs after variable declarations are complete
 // avoiding circular dependency

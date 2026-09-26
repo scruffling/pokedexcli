@@ -3,6 +3,8 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
+	"io"
+	"log/slog"
 	"net/http"
 )
 
@@ -20,24 +22,39 @@ type LocationAreas struct {
 
 func (c *Client) GetLocationAreas(url string) (LocationAreas, error) {
 	var locationAreas LocationAreas
-	req, err := http.NewRequest("GET", url, nil)
+	data, ok := c.pokeCache.Get(url)
 
-	if err != nil {
-		fmt.Println("Request generation error:")
-		return locationAreas, err
+	if !ok {
+		slog.Debug("No cached data available. Making request...")
+		req, err := http.NewRequest("GET", url, nil)
+
+		if err != nil {
+			return locationAreas, fmt.Errorf("Request generation error: %w\n", err)
+		}
+
+		res, err := c.httpClient.Do(req)
+		if err != nil {
+			return locationAreas, fmt.Errorf("error getting response: %w\n", err)
+		}
+		defer res.Body.Close()
+
+		data, err = io.ReadAll(res.Body)
+		if err != nil {
+			return locationAreas, fmt.Errorf("error reading response: %w\n", err)
+
+		}
+
+		// cache data
+		c.pokeCache.Add(url, data)
+	} else {
+		slog.Debug("Using cached data...")
 	}
 
-	res, err := c.httpClient.Do(req)
+	// we are caching the response bytes, so we will need to unmarshal
+	// rather than json decode here
+	err := json.Unmarshal(data, &locationAreas)
 	if err != nil {
-		return locationAreas, fmt.Errorf("error creating request: %w", err)
-	}
-	defer res.Body.Close()
-
-	decoder := json.NewDecoder(res.Body)
-	err = decoder.Decode(&locationAreas)
-	if err != nil {
-		fmt.Println("Decode error:")
-		return locationAreas, err
+		return locationAreas, fmt.Errorf("Unmarshal error: %w\n", err)
 	}
 
 	return locationAreas, nil

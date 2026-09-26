@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log/slog"
 
 	"github.com/scruffling/pokedexcli/internal/pokeapi"
 )
@@ -22,8 +23,8 @@ func commandBaseMap(cfg *config, targetType string) error {
 		fmt.Println(area)
 	}
 	fmt.Println("-- End of Page")
-	fmt.Printf("-- Previous anchor: %s\n", cfg.previousMapURL)
-	fmt.Printf("-- Next anchor: %s\n", cfg.nextMapURL)
+	slog.Debug("-- Previous anchor", "anchor", cfg.previousMapURL)
+	slog.Debug("-- Next anchor", "anchor", cfg.nextMapURL)
 	return nil
 }
 
