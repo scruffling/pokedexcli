@@ -26,7 +26,7 @@ func startRepl(cfg *config) {
 				fmt.Println("Unknown command")
 				continue
 			}
-			if err := command.callback(cfg); err != nil {
+			if err := command.callback(cfg, tokens[1:]...); err != nil {
 				fmt.Printf("Command error: %v\n", err)
 			}
 		} else {

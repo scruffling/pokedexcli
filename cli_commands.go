@@ -25,9 +25,14 @@ func newConfig(client pokeapi.Client) *config {
 				callback:    commandMap,
 			},
 			"mapb": {
-				name:        "help",
+				name:        "map-back",
 				description: "Displays previous Pokemon area pagnination",
 				callback:    commandMapB,
+			},
+			"explore": {
+				name:        "explore",
+				description: "Lists Pokemon found in a location area: explore <location-area-name|id>",
+				callback:    commandExplore,
 			},
 		},
 		nextMapURL:     "",
@@ -51,5 +56,5 @@ func (c config) getCommands(commandName string) (cliCommand, bool) {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(config *config) error
+	callback    func(config *config, args ...string) error
 }
