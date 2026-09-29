@@ -34,6 +34,16 @@ func newConfig(client pokeapi.Client) *config {
 				description: "Try to catch a Pokemon and add it to your Pokedex: catch <pokemon-name>",
 				callback:    commandCatch,
 			},
+			"inspect": {
+				name:        "inspect",
+				description: "Show details of a caught Pokemon: inspect <pokemon-name>",
+				callback:    commandInspect,
+			},
+			"list": {
+				name:        "list",
+				description: "List the names of Pokemon in your Pokedex",
+				callback:    commandList,
+			},
 			"explore": {
 				name:        "explore",
 				description: "Lists Pokemon found in a location area: explore <location-area-name|id>",
