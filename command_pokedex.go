@@ -9,7 +9,7 @@ import (
 	"github.com/scruffling/pokedexcli/internal/pokeapi"
 )
 
-func commandList(cfg *config, args ...string) error {
+func commandPokedex(cfg *config, args ...string) error {
 	return listPokedex(os.Stdout, cfg.pokedex)
 }
 

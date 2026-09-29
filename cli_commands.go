@@ -39,10 +39,10 @@ func newConfig(client pokeapi.Client) *config {
 				description: "Show details of a caught Pokemon: inspect <pokemon-name>",
 				callback:    commandInspect,
 			},
-			"list": {
-				name:        "list",
+			"pokedex": {
+				name:        "pokedex",
 				description: "List the names of Pokemon in your Pokedex",
-				callback:    commandList,
+				callback:    commandPokedex,
 			},
 			"explore": {
 				name:        "explore",
