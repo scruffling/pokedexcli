@@ -29,6 +29,11 @@ func newConfig(client pokeapi.Client) *config {
 				description: "Displays previous Pokemon area pagnination",
 				callback:    commandMapB,
 			},
+			"catch": {
+				name:        "catch",
+				description: "Try to catch a Pokemon and add it to your Pokedex: catch <pokemon-name>",
+				callback:    commandCatch,
+			},
 			"explore": {
 				name:        "explore",
 				description: "Lists Pokemon found in a location area: explore <location-area-name|id>",
@@ -38,6 +43,7 @@ func newConfig(client pokeapi.Client) *config {
 		nextMapURL:     "",
 		previousMapURL: "",
 		pokeapiClient:  client,
+		pokedex:        map[string]pokeapi.Pokemon{},
 	}
 }
 
@@ -46,6 +52,7 @@ type config struct {
 	nextMapURL     string
 	previousMapURL string
 	pokeapiClient  pokeapi.Client
+	pokedex        map[string]pokeapi.Pokemon // caught Pokemon keyed by name
 }
 
 func (c config) getCommands(commandName string) (cliCommand, bool) {
